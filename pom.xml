@@ -60,7 +60,7 @@
 				<configuration>
 					<user>homestead</user>
 					<password>secret</password>
-					<url>jdbc:mysql://192.168.10.10:3306/springboot_demo?characterEncoding=utf-8</url>
+					<url>jdbc:mysql://192.168.10.10:3306/wxshop?characterEncoding=utf-8</url>
 				</configuration>
 			</plugin>
 		</plugins>

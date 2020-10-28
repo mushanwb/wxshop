@@ -53,6 +53,16 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>7.1.0</version>
+				<configuration>
+					<user>homestead</user>
+					<password>secret</password>
+					<url>jdbc:mysql://192.168.10.10:3306/springboot_demo?characterEncoding=utf-8</url>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 

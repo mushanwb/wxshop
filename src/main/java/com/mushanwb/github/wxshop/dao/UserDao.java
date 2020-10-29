@@ -1,8 +1,8 @@
 package com.mushanwb.github.wxshop.dao;
 
-import com.mushanwb.github.wxshop.entity.User;
-import com.mushanwb.github.wxshop.entity.UserExample;
-import com.mushanwb.github.wxshop.mapper.UserMapper;
+import com.mushanwb.github.wxshop.generate.User;
+import com.mushanwb.github.wxshop.generate.UserExample;
+import com.mushanwb.github.wxshop.generate.UserMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

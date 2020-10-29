@@ -1,12 +1,10 @@
 package com.mushanwb.github.wxshop.controller;
 
 import com.mushanwb.github.wxshop.service.AuthService;
-import org.apache.catalina.security.SecurityUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 @RestController

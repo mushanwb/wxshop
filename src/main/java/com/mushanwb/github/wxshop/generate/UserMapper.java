@@ -1,7 +1,7 @@
-package com.mushanwb.github.wxshop.mapper;
+package com.mushanwb.github.wxshop.generate;
 
-import com.mushanwb.github.wxshop.entity.User;
-import com.mushanwb.github.wxshop.entity.UserExample;
+import com.mushanwb.github.wxshop.generate.User;
+import com.mushanwb.github.wxshop.generate.UserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

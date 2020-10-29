@@ -1,4 +1,4 @@
-package com.mushanwb.github.wxshop.entity;
+package com.mushanwb.github.wxshop.generate;
 
 import java.util.ArrayList;
 import java.util.List;

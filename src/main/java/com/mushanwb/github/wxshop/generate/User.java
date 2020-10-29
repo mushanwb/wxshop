@@ -1,4 +1,4 @@
-package com.mushanwb.github.wxshop.entity;
+package com.mushanwb.github.wxshop.generate;
 
 public class User {
     /**

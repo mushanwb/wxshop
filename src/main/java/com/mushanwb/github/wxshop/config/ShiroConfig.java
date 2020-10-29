@@ -1,9 +1,12 @@
 package com.mushanwb.github.wxshop.config;
 
+import com.mushanwb.github.wxshop.service.ShiroRealm;
+import com.mushanwb.github.wxshop.service.VerificationCodeCheckService;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
+import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.ShiroFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
@@ -28,13 +31,18 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SecurityManager securityManager() {
+    public SecurityManager securityManager(ShiroRealm shiroRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 
-//        securityManager.setRealm();
+        securityManager.setRealm(shiroRealm);
         securityManager.setCacheManager(new MemoryConstrainedCacheManager());
-        securityManager.setSessionManager(new DefaultWebSecurityManager());
+        securityManager.setSessionManager(new DefaultSecurityManager());
         return securityManager;
+    }
+
+    @Bean
+    public ShiroRealm myShiroRealm(VerificationCodeCheckService verificationCodeCheckService) {
+        return new ShiroRealm(verificationCodeCheckService);
     }
 
 }

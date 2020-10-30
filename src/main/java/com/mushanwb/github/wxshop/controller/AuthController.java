@@ -1,27 +1,38 @@
 package com.mushanwb.github.wxshop.controller;
 
 import com.mushanwb.github.wxshop.service.AuthService;
+import com.mushanwb.github.wxshop.service.TelVerificationService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 public class AuthController {
     private final AuthService authService;
+    private TelVerificationService telVerificationService;
 
     @Autowired
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService,
+                          TelVerificationService telVerificationService) {
+        this.telVerificationService = telVerificationService;
         this.authService = authService;
     }
 
     @PostMapping("/code")
-    @ResponseBody
-    public void code(@RequestBody Map<String, String> param) {
+    public void code(@RequestBody Map<String, String> param,
+                     HttpServletResponse response) {
         String tel = param.get("tel");
-        authService.sendVerificationCode(tel);
+        if (telVerificationService.verifyTelParameter(tel)) {
+            authService.sendVerificationCode(tel);
+        } else {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+        }
     }
 
     @PostMapping("/login")

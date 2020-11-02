@@ -45,4 +45,9 @@ public class AuthController {
         SecurityUtils.getSubject().login(token);
     }
 
+    @GetMapping("/status")
+    public void loginStatus() {
+        System.out.println(SecurityUtils.getSubject().getPrincipal());
+    }
+
 }

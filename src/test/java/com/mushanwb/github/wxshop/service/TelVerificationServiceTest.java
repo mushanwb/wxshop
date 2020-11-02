@@ -7,6 +7,7 @@ class TelVerificationServiceTest {
 
     public static String VALID_TEL = "13812345678";
     public static String NOT_TEL = null;
+    public static String VALID_CODE = "000000";
 
     @Test
     public void returnTrueIfValid() {

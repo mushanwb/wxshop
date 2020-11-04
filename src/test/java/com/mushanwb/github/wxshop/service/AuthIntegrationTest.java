@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.mushanwb.github.wxshop.WxshopApplication;
+import com.mushanwb.github.wxshop.entity.LoginResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,14 +63,17 @@ public class AuthIntegrationTest {
         // 带着 Cookie 访问 /api/status 应该处于登录接口
         // 调用 /api/logout
         // 再次带着 Cookie 访问 /api/status
+
+        // 默认情况下访问 /api/status 处于未登录状态
         String statusResponse = HttpRequest.get(getUrl("/api/status"))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .body();
 
-        Map<String, Object> response = objectMapper.readValue(statusResponse, Map.class);
-        Assertions.assertFalse((Boolean) response.get("login"));
+        LoginResponse response = objectMapper.readValue(statusResponse, LoginResponse.class);
+        Assertions.assertFalse(response.isLogin());
 
+        // 发送验证码
         Map<String, String> telParam = new HashMap<>();
         telParam.put("tel", TelVerificationServiceTest.VALID_TEL);
         int responseCode = HttpRequest.post(getUrl("/api/code"))
@@ -79,6 +83,7 @@ public class AuthIntegrationTest {
                 .code();
         Assertions.assertEquals(HTTP_OK, responseCode);
 
+        // 带着验证码进行登录，得到 Cookie
         Map<String, String> telAndCodeParam = new HashMap<>();
         telAndCodeParam.put("tel", TelVerificationServiceTest.VALID_TEL);
         telAndCodeParam.put("code", TelVerificationServiceTest.VALID_CODE);
@@ -90,6 +95,45 @@ public class AuthIntegrationTest {
         List<String> setCookie = responseHeaders.get("Set-Cookie");
         Assertions.assertNotNull(setCookie);
 
+        String sessionId = getSessionIdFromSetCookie(setCookie.stream()
+                .filter(cookie->cookie.contains("JSESSIONID"))
+                .findFirst()
+                .get());
+
+        // 带着 Cookie 访问 /api/status 应该处于登录接口
+        statusResponse = HttpRequest.get(getUrl("/api/status"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Cookie", sessionId)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .body();
+
+        response = objectMapper.readValue(statusResponse, LoginResponse.class);
+        Assertions.assertTrue(response.isLogin());
+        Assertions.assertEquals(TelVerificationServiceTest.VALID_TEL, response.getUser().getTel());
+
+        // 调用 /api/logout
+        HttpRequest.post(getUrl("/api/logout"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Cookie", sessionId)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .headers();
+
+        // 再次带着 Cookie 访问 /api/status
+        statusResponse = HttpRequest.get(getUrl("/api/status"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Cookie", sessionId)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .body();
+        response = objectMapper.readValue(statusResponse, LoginResponse.class);
+        Assertions.assertFalse(response.isLogin());
+    }
+
+    private String getSessionIdFromSetCookie(String setCookie) {
+        // 由 JSESSIONID=53568606-6a4b-4179-83fc-8e1d523586bb; Path=/; HttpOnly; SameSite=lax
+        // 拿到 JSESSIONID=53568606-6a4b-4179-83fc-8e1d523586bb
+        int semiColonIndex = setCookie.indexOf(";");
+
+        return setCookie.substring(0, semiColonIndex);
     }
 
     private String getUrl(String apiName) {

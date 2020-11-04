@@ -4,6 +4,7 @@ import com.mushanwb.github.wxshop.entity.LoginResponse;
 import com.mushanwb.github.wxshop.service.AuthService;
 import com.mushanwb.github.wxshop.service.TelVerificationService;
 import com.mushanwb.github.wxshop.service.UserContext;
+import org.apache.catalina.security.SecurityUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,11 @@ public class AuthController {
         } else {
             return LoginResponse.login(UserContext.getCurrentUser());
         }
+    }
+
+    @PostMapping("/logout")
+    public void logout() {
+        SecurityUtils.getSubject().logout();
     }
 
 }

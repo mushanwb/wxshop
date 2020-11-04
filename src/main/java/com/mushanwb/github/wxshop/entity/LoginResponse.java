@@ -14,6 +14,10 @@ public class LoginResponse {
         return new LoginResponse(true, user);
     }
 
+    public LoginResponse() {
+        
+    }
+
     private LoginResponse(boolean login, User user) {
         this.login = login;
         this.user = user;

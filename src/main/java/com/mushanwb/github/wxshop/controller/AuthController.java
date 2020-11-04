@@ -1,6 +1,6 @@
 package com.mushanwb.github.wxshop.controller;
 
-import com.mushanwb.github.wxshop.generate.User;
+import com.mushanwb.github.wxshop.entity.LoginResponse;
 import com.mushanwb.github.wxshop.service.AuthService;
 import com.mushanwb.github.wxshop.service.TelVerificationService;
 import com.mushanwb.github.wxshop.service.UserContext;
@@ -45,33 +45,6 @@ public class AuthController {
         UsernamePasswordToken token = new UsernamePasswordToken(tel, code);
 
         SecurityUtils.getSubject().login(token);
-    }
-
-    public static class LoginResponse {
-        private boolean login = false;
-        private User user;
-
-        public static LoginResponse notLogin() {
-            return new LoginResponse(false, null);
-        }
-
-        public static LoginResponse login(User user) {
-            return new LoginResponse(true, user);
-        }
-
-        private LoginResponse(boolean login, User user) {
-            this.login = login;
-            this.user = user;
-        }
-
-        public User getUser() {
-            return user;
-        }
-
-        public boolean isLogin() {
-            return login;
-        }
-
     }
 
     @GetMapping("/status")

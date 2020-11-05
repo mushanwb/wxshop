@@ -1,5 +1,8 @@
 package com.mushanwb.github.wxshop.generate;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
 public class OrderGoods {
     /**
      *

@@ -15,7 +15,6 @@ public class LoginResponse {
     }
 
     public LoginResponse() {
-        
     }
 
     private LoginResponse(boolean login, User user) {

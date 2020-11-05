@@ -36,10 +36,6 @@
         <table schema="wxshop" tableName="user" domainObjectName="User" >
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
-            <columnOverride column="avatar_url" property="avatarUrl" />
-            <columnOverride column="created_at" property="createdAt" />
-            <columnOverride column="updated_at" property="updatedAt" />
-            <columnOverride column="deleted_at" property="deletedAt" />
         </table>
 
     </context>

@@ -19,8 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
-import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = WxshopApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)    //随机端口
@@ -130,6 +129,13 @@ public class AuthIntegrationTest {
         statusResponse = doHttpRequest("/api/status", true, null, sessionId).body;
         response = objectMapper.readValue(statusResponse, LoginResponse.class);
         Assertions.assertFalse(response.isLogin());
+    }
+
+    @Test
+    public void returnUnauthorizedIfNotLogin() throws JsonProcessingException {
+        int responseCode = doHttpRequest("/api/any", true, null, null).code;
+        Assertions.assertEquals(HTTP_UNAUTHORIZED, responseCode);
+
     }
 
     private String getSessionIdFromSetCookie(String setCookie) {

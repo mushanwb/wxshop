@@ -27,7 +27,12 @@ public class GoodsController {
         // 设置返回的 http 状态码为 201
         response.setStatus(HttpStatus.CREATED.value());
 
-        return Response.of(goodsService.createGoods(goods));
+        try {
+            return Response.of(goodsService.createGoods(goods));
+        } catch (GoodsService.NotAuthorizedForShopException e) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return Response.of(null, e.getMessage());
+        }
     }
 
 }

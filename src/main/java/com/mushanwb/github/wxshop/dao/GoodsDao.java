@@ -3,8 +3,6 @@ package com.mushanwb.github.wxshop.dao;
 import com.mushanwb.github.wxshop.entity.DataStatus;
 import com.mushanwb.github.wxshop.generate.Goods;
 import com.mushanwb.github.wxshop.generate.GoodsMapper;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

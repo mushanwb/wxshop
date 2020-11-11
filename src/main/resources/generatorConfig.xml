@@ -5,6 +5,9 @@
 
 <generatorConfiguration>
     <context id="wxshop" targetRuntime="MyBatis3">
+<!--        自动生成 mapper 注解-->
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin" />
+
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
                         connectionURL="jdbc:mysql://192.168.10.10:3306/wxshop?characterEncoding=utf-8"
                         userId="homestead"

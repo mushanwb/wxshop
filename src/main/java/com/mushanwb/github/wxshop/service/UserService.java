@@ -6,6 +6,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 
 @Service
@@ -22,7 +23,7 @@ public class UserService {
         user.setTel(tel);
         try {
             userDao.insertUser(user);
-        } catch (PersistenceException e) {
+        } catch (Exception e) {
             return userDao.getUserByTel(tel);
         }
         return user;

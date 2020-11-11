@@ -33,6 +33,16 @@ public class GoodsService {
         }
     }
 
+    public Goods deleteGoodsById(Long goodsId) {
+        Shop shop = shopDao.findShopById(goodsId);
+
+        if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
+            return goodsDao.deleteGoodsById(goodsId);
+        } else {
+            throw new NotAuthorizedForShopException("无权访问！");
+        }
+    }
+
     public static class NotAuthorizedForShopException extends RuntimeException {
         public NotAuthorizedForShopException(String message) {
             super(message);

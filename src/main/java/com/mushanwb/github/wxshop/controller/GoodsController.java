@@ -1,5 +1,6 @@
 package com.mushanwb.github.wxshop.controller;
 
+import com.mushanwb.github.wxshop.dao.GoodsDao;
 import com.mushanwb.github.wxshop.entity.Response;
 import com.mushanwb.github.wxshop.generate.Goods;
 import com.mushanwb.github.wxshop.service.GoodsService;
@@ -31,6 +32,20 @@ public class GoodsController {
             return Response.of(goodsService.createGoods(goods));
         } catch (GoodsService.NotAuthorizedForShopException e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
+            return Response.of(null, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/goods/{id}")
+    public Response<Goods> deleteGoods(@PathVariable("id") Long goodsId, HttpServletResponse response) {
+        try {
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+            return Response.of(goodsService.deleteGoodsById(goodsId));
+        } catch (GoodsService.NotAuthorizedForShopException e) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return Response.of(null, e.getMessage());
+        } catch (GoodsDao.ResourceNotFoundException e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
             return Response.of(null, e.getMessage());
         }
     }

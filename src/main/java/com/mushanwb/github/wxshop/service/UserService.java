@@ -2,11 +2,9 @@ package com.mushanwb.github.wxshop.service;
 
 import com.mushanwb.github.wxshop.dao.UserDao;
 import com.mushanwb.github.wxshop.generate.User;
-import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 
 @Service

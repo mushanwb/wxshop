@@ -17,8 +17,12 @@ public class Response<T> {
         this.message = message;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
 }

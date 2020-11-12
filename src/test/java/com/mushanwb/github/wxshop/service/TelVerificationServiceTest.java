@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class TelVerificationServiceTest {
 
-    public static String VALID_TEL = "13812345678";
+    public static String VALID_TEL = "13800000000";
     public static String NOT_TEL = null;
     public static String VALID_CODE = "000000";
 

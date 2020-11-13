@@ -1,6 +1,7 @@
 package com.mushanwb.github.wxshop.controller;
 
 import com.mushanwb.github.wxshop.dao.GoodsDao;
+import com.mushanwb.github.wxshop.entity.PageResponse;
 import com.mushanwb.github.wxshop.entity.Response;
 import com.mushanwb.github.wxshop.generate.Goods;
 import com.mushanwb.github.wxshop.service.GoodsService;
@@ -48,6 +49,15 @@ public class GoodsController {
             response.setStatus(HttpStatus.NOT_FOUND.value());
             return Response.of(null, e.getMessage());
         }
+    }
+
+    @GetMapping("goods")
+    @ResponseBody
+    public PageResponse<Goods> getGoods(@RequestParam("pageNum") Integer pageNum,
+                                 @RequestParam("pageSize") Integer pageSize,
+                                 @RequestParam(value = "shopId", required = false) Integer shopId) {
+
+        return goodsService.getGoods(pageNum, pageSize, shopId);
     }
 
 }

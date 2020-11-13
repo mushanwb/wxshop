@@ -1,5 +1,9 @@
 package com.mushanwb.github.wxshop.entity;
 
-public class DataStatus {
-    public static final String DELETE_STATUS = "delete";
+public enum DataStatus {
+    OK(),
+    DELETED();
+    public String getName() {
+        return name().toLowerCase();
+    }
 }

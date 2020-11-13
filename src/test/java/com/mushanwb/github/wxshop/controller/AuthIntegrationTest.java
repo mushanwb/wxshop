@@ -1,9 +1,10 @@
-package com.mushanwb.github.wxshop.service;
+package com.mushanwb.github.wxshop.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.mushanwb.github.wxshop.WxshopApplication;
 import com.mushanwb.github.wxshop.entity.LoginResponse;
+import com.mushanwb.github.wxshop.service.TelVerificationServiceTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

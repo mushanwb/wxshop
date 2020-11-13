@@ -18,10 +18,8 @@ public class GoodsDao {
         this.goodsMapper = goodsMapper;
     }
 
-    public Goods createGoods(Goods goods) {
-        long goodsId = goodsMapper.insert(goods);
-        goods.setId(goodsId);
-        return goods;
+    public int createGoods(Goods goods) {
+        return goodsMapper.insert(goods);
     }
 
     public Goods deleteGoodsById(Long goodsId) {

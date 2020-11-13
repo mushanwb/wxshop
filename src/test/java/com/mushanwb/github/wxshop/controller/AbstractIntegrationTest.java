@@ -1,9 +1,10 @@
-package com.mushanwb.github.wxshop.service;
+package com.mushanwb.github.wxshop.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.mushanwb.github.wxshop.entity.LoginResponse;
+import com.mushanwb.github.wxshop.service.TelVerificationServiceTest;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.ClassicConfiguration;
 import org.junit.jupiter.api.Assertions;

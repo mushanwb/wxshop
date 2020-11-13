@@ -3,7 +3,7 @@ package com.mushanwb.github.wxshop.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class TelVerificationServiceTest {
+public class TelVerificationServiceTest {
 
     public static String VALID_TEL = "13800000000";
     public static String NOT_TEL = null;

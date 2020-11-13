@@ -1,4 +1,4 @@
-package com.mushanwb.github.wxshop.service;
+package com.mushanwb.github.wxshop.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

@@ -3,6 +3,7 @@ package com.mushanwb.github.wxshop.service;
 import com.mushanwb.github.wxshop.dao.GoodsDao;
 import com.mushanwb.github.wxshop.dao.ShopDao;
 import com.mushanwb.github.wxshop.entity.DataStatus;
+import com.mushanwb.github.wxshop.entity.PageResponse;
 import com.mushanwb.github.wxshop.generate.Goods;
 import com.mushanwb.github.wxshop.generate.Shop;
 import com.mushanwb.github.wxshop.generate.User;
@@ -15,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class GoodsServiceTest {
@@ -114,5 +117,31 @@ class GoodsServiceTest {
         });
     }
 
+    @Test
+    public void getGoodsSuccessWithNullShopId() {
+        int pageNumber = 5;
+        int pageSize = 10;
+        // 创建一个假的 list<Goods> 结构
+        List<Goods> mockGoods = Mockito.mock(List.class);
+
+        // 假设 shopId 为 null 时，总条数为 55
+        Mockito.when(goodsDao.countAll(null)).thenReturn(55);
+        // 假设调用 goodsDao.pageGoods 返回 创建好的假 list<Goods> 结构
+        Mockito.when(goodsDao.pageGoods(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(mockGoods);
+
+        // 当调用 goodsService.getGoods 时返回的结果
+        PageResponse<Goods> result = goodsService.getGoods(pageNumber, pageSize, null);
+
+        // 断定 返回的结果中总页数为 6，当前页为 5，每页数量为 10，数据为创建的假数据
+        Assertions.assertEquals(6, result.getTotalPage());
+        Assertions.assertEquals(5, result.getPageNum());
+        Assertions.assertEquals(10, result.getPageSize());
+        Assertions.assertEquals(mockGoods, result.getData());
+    }
+
+    @Test
+    public void getGoodsSuccessWithNonNullShopId() {
+
+    }
 
 }

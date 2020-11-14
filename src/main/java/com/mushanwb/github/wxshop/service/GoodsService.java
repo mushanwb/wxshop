@@ -63,6 +63,20 @@ public class GoodsService {
         return PageResponse.pageData(pageNum, pageSize, totalPage, goods);
     }
 
+    public Goods updateGoods(Goods goods) {
+        Shop shop = shopDao.findShopById(goods.getShopId());
+
+        if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
+            int affectedRows = goodsDao.updateGoods(goods);
+            if (affectedRows == 0) {
+                throw new GoodsDao.ResourceNotFoundException("未找到");
+            }
+            return goods;
+        } else {
+            throw new NotAuthorizedForShopException("无权访问！");
+        }
+    }
+
     public static class NotAuthorizedForShopException extends RuntimeException {
         public NotAuthorizedForShopException(String message) {
             super(message);

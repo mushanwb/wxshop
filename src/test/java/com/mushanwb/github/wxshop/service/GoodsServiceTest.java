@@ -141,7 +141,24 @@ class GoodsServiceTest {
 
     @Test
     public void getGoodsSuccessWithNonNullShopId() {
+        int pageNumber = 5;
+        int pageSize = 10;
+        // 创建一个假的 list<Goods> 结构
+        List<Goods> mockGoods = Mockito.mock(List.class);
 
+        // 假设 shopId 为 456 时，总条数为 100
+        Mockito.when(goodsDao.countAll(456)).thenReturn(100);
+        // 假设调用 goodsDao.pageGoods 返回 创建好的假 list<Goods> 结构
+        Mockito.when(goodsDao.pageGoods(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(mockGoods);
+
+        // 当调用 goodsService.getGoods 时返回的结果
+        PageResponse<Goods> result = goodsService.getGoods(pageNumber, pageSize, 456);
+
+        // 断定 返回的结果中总页数为 6，当前页为 5，每页数量为 10，数据为创建的假数据
+        Assertions.assertEquals(10, result.getTotalPage());
+        Assertions.assertEquals(5, result.getPageNum());
+        Assertions.assertEquals(10, result.getPageSize());
+        Assertions.assertEquals(mockGoods, result.getData());
     }
 
 }

@@ -37,6 +37,7 @@ class GoodsServiceTest {
         User user = new User();
         user.setId(1L);
         UserContext.setCurrentUser(user);
+
     }
 
     @AfterEach
@@ -75,17 +76,42 @@ class GoodsServiceTest {
 
     @Test
     public void deleteGoodsSuccessIfUserIsOwner() {
-        
+        Long deleteGoodsId = 1L;
+        // 假设当调用 shopDao.findShopById 这个方法的时候，无论传入一个什么样的 long 类型值，都会返回一个 shop
+        Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(shop);
+        // 假设返回的 shop 里 userId 为 1，也就是跟模拟的用户 id 一致
+        Mockito.when(shop.getOwnerUserId()).thenReturn(1L);
+        Mockito.when(goodsDao.getGoodsById(deleteGoodsId)).thenReturn(goods);
+
+        goodsService.deleteGoodsById(deleteGoodsId);
+        Mockito.verify(goods).setStatus(DataStatus.DELETED.getName());
     }
 
     @Test
     public void throwExceptionIfGoodsNotFound() {
+        Long deleteGoodsId = 1L;
+        // 假设当调用 shopDao.findShopById 这个方法的时候，无论传入一个什么样的 long 类型值，都会返回一个 shop
+        Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(shop);
+        // 假设返回的 shop 里 userId 为 1，也就是跟模拟的用户 id 一致
+        Mockito.when(shop.getOwnerUserId()).thenReturn(1L);
+        // 假设 goodsDao.getGoodsById 返回一个 null
+        Mockito.when(goodsDao.getGoodsById(deleteGoodsId)).thenReturn(null);
 
+        // 断言调用 goodsService.deleteGoodsById 将会抛出异常
+        Assertions.assertThrows(GoodsDao.ResourceNotFoundException.class, () -> goodsService.deleteGoodsById(deleteGoodsId));
     }
 
     @Test
     public void deleteGoodsThrowExceptionIfUserIsNotOwner() {
+        Long deleteGoodsId = 1L;
+        // 假设当调用 shopDao.findShopById 这个方法的时候，无论传入一个什么样的 long 类型值，都会返回一个 shop
+        Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(shop);
+        // 假设返回的 shop 里 userId 为 2，也就是跟模拟的用户 id 不一致
+        Mockito.when(shop.getOwnerUserId()).thenReturn(2L);
 
+        Assertions.assertThrows(GoodsService.NotAuthorizedForShopException.class, () -> {
+            goodsService.deleteGoodsById(deleteGoodsId);
+        });
     }
 
 

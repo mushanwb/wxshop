@@ -2,6 +2,7 @@ package com.mushanwb.github.wxshop.service;
 
 import com.mushanwb.github.wxshop.dao.GoodsDao;
 import com.mushanwb.github.wxshop.dao.ShopDao;
+import com.mushanwb.github.wxshop.entity.DataStatus;
 import com.mushanwb.github.wxshop.generate.Goods;
 import com.mushanwb.github.wxshop.generate.Shop;
 import com.mushanwb.github.wxshop.generate.User;
@@ -62,7 +63,30 @@ class GoodsServiceTest {
 
     @Test
     public void createGoodsFailedIfUserIsNotOwner() {
+        // 假设当调用 shopDao.findShopById 这个方法的时候，无论传入一个什么样的 long 类型值，都会返回一个 shop
+        Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(shop);
+        // 假设返回的 shop 里 userId 为 2，也就是跟模拟的用户 id 不一致
+        Mockito.when(shop.getOwnerUserId()).thenReturn(2L);
+
+        Assertions.assertThrows(GoodsService.NotAuthorizedForShopException.class, () -> {
+            goodsService.createGoods(goods);
+        });
+    }
+
+    @Test
+    public void deleteGoodsSuccessIfUserIsOwner() {
+        
+    }
+
+    @Test
+    public void throwExceptionIfGoodsNotFound() {
 
     }
+
+    @Test
+    public void deleteGoodsThrowExceptionIfUserIsNotOwner() {
+
+    }
+
 
 }

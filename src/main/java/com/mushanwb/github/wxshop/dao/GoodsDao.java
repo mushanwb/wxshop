@@ -22,14 +22,12 @@ public class GoodsDao {
         return goodsMapper.insert(goods);
     }
 
-    public Goods deleteGoodsById(Long goodsId) {
-        Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
-        if (goods == null) {
-            throw new ResourceNotFoundException("商品未找到");
-        }
-        goods.setStatus(DataStatus.OK.getName());
+    public Goods getGoodsById(Long goodsId) {
+        return goodsMapper.selectByPrimaryKey(goodsId);
+    }
+
+    public void deleteGoodsById(Goods goods) {
         goodsMapper.updateByPrimaryKey(goods);
-        return goods;
     }
 
     public int countAll(Integer shopId) {

@@ -2,6 +2,7 @@ package com.mushanwb.github.wxshop.service;
 
 import com.mushanwb.github.wxshop.dao.GoodsDao;
 import com.mushanwb.github.wxshop.dao.ShopDao;
+import com.mushanwb.github.wxshop.entity.DataStatus;
 import com.mushanwb.github.wxshop.entity.PageResponse;
 import com.mushanwb.github.wxshop.generate.Goods;
 import com.mushanwb.github.wxshop.generate.Shop;
@@ -41,7 +42,13 @@ public class GoodsService {
         Shop shop = shopDao.findShopById(goodsId);
 
         if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
-            return goodsDao.deleteGoodsById(goodsId);
+            Goods goods = goodsDao.getGoodsById(goodsId);
+            if (goods == null) {
+                throw new GoodsDao.ResourceNotFoundException("商品未找到");
+            }
+            goods.setStatus(DataStatus.DELETED.getName());
+            goodsDao.deleteGoodsById(goods);
+            return goods;
         } else {
             throw new NotAuthorizedForShopException("无权访问！");
         }

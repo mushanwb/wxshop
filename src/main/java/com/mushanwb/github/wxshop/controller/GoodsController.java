@@ -24,6 +24,7 @@ public class GoodsController {
     }
 
     @PostMapping("goods")
+    @ResponseBody
     public Response<Goods> createdGoods(@RequestBody Goods goods,
                                  HttpServletResponse response) {
         // 设置返回的 http 状态码为 201
@@ -38,6 +39,7 @@ public class GoodsController {
     }
 
     @DeleteMapping("/goods/{id}")
+    @ResponseBody
     public Response<Goods> deleteGoods(@PathVariable("id") Long goodsId, HttpServletResponse response) {
         try {
             response.setStatus(HttpStatus.NO_CONTENT.value());
@@ -51,13 +53,27 @@ public class GoodsController {
         }
     }
 
-    @GetMapping("goods")
+    @GetMapping("/goods")
     @ResponseBody
     public PageResponse<Goods> getGoods(@RequestParam("pageNum") Integer pageNum,
                                  @RequestParam("pageSize") Integer pageSize,
                                  @RequestParam(value = "shopId", required = false) Integer shopId) {
 
         return goodsService.getGoods(pageNum, pageSize, shopId);
+    }
+
+    @PutMapping("/goods/{id}")
+    @ResponseBody
+    public Response<Goods> updateGoods(Goods goods, HttpServletResponse response) {
+        try {
+            return Response.of(goodsService.updateGoods(goods));
+        } catch (GoodsService.NotAuthorizedForShopException e) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return Response.of(null, e.getMessage());
+        } catch (GoodsDao.ResourceNotFoundException e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            return Response.of(null, e.getMessage());
+        }
     }
 
 }

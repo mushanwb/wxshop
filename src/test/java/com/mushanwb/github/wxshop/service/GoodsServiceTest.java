@@ -161,4 +161,15 @@ class GoodsServiceTest {
         Assertions.assertEquals(mockGoods, result.getData());
     }
 
+    @Test
+    public void updateGoodsSuccess() {
+        // 假设当调用 shopDao.findShopById 这个方法的时候，无论传入一个什么样的 long 类型值，都会返回一个 shop
+        Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(shop);
+        // 假设返回的 shop 里 userId 为 1，也就是跟模拟的用户 id 一致
+        Mockito.when(shop.getOwnerUserId()).thenReturn(1L);
+        Mockito.when(goodsDao.updateGoods(goods)).thenReturn(1);
+
+        Assertions.assertEquals(goods, goodsService.updateGoods(goods));
+    }
+
 }

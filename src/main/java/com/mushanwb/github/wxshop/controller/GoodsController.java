@@ -64,8 +64,11 @@ public class GoodsController {
 
     @PutMapping("/goods/{id}")
     @ResponseBody
-    public Response<Goods> updateGoods(Goods goods, HttpServletResponse response) {
+    public Response<Goods> updateGoods(@PathVariable("id") Long goodsId,
+                                       @RequestBody Goods goods,
+                                       HttpServletResponse response) {
         try {
+            goods.setId(goodsId);
             return Response.of(goodsService.updateGoods(goods));
         } catch (GoodsService.NotAuthorizedForShopException e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());

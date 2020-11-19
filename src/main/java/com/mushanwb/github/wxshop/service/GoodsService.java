@@ -34,7 +34,7 @@ public class GoodsService {
             goodsDao.createGoods(goods);
             return goods;
         } else {
-            throw new WxShopException.NotAuthorizedForShopException("无权访问！");
+            throw WxShopException.forbidden("无权访问！");
         }
     }
 
@@ -44,13 +44,13 @@ public class GoodsService {
         if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
             Goods goods = goodsDao.getGoodsById(goodsId);
             if (goods == null) {
-                throw new WxShopException.ResourceNotFoundException("商品未找到");
+                throw WxShopException.notFound("商品未找到");
             }
             goods.setStatus(DataStatus.DELETED.getName());
             goodsDao.deleteGoodsById(goods);
             return goods;
         } else {
-            throw new WxShopException.NotAuthorizedForShopException("无权访问！");
+            throw WxShopException.forbidden("无权访问！");
         }
     }
 
@@ -69,11 +69,11 @@ public class GoodsService {
         if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
             int affectedRows = goodsDao.updateGoods(goods);
             if (affectedRows == 0) {
-                throw new WxShopException.ResourceNotFoundException("商品未找到");
+                throw WxShopException.notFound("商品未找到");
             }
             return goods;
         } else {
-            throw new WxShopException.NotAuthorizedForShopException("无权访问！");
+            throw WxShopException.forbidden("无权访问！");
         }
     }
 

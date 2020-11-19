@@ -70,7 +70,7 @@ class GoodsServiceTest {
         // 假设返回的 shop 里 userId 为 2，也就是跟模拟的用户 id 不一致
         Mockito.when(shop.getOwnerUserId()).thenReturn(2L);
 
-        Assertions.assertThrows(WxShopException.NotAuthorizedForShopException.class, () -> {
+        Assertions.assertThrows(WxShopException.class, () -> {
             goodsService.createGoods(goods);
         });
     }
@@ -99,7 +99,7 @@ class GoodsServiceTest {
         Mockito.when(goodsDao.getGoodsById(deleteGoodsId)).thenReturn(null);
 
         // 断言调用 goodsService.deleteGoodsById 将会抛出异常
-        Assertions.assertThrows(WxShopException.ResourceNotFoundException.class, () -> goodsService.deleteGoodsById(deleteGoodsId));
+        Assertions.assertThrows(WxShopException.class, () -> goodsService.deleteGoodsById(deleteGoodsId));
     }
 
     @Test
@@ -110,7 +110,7 @@ class GoodsServiceTest {
         // 假设返回的 shop 里 userId 为 2，也就是跟模拟的用户 id 不一致
         Mockito.when(shop.getOwnerUserId()).thenReturn(2L);
 
-        Assertions.assertThrows(WxShopException.NotAuthorizedForShopException.class, () -> {
+        Assertions.assertThrows(WxShopException.class, () -> {
             goodsService.deleteGoodsById(deleteGoodsId);
         });
     }

@@ -43,11 +43,8 @@ public class ShopController {
         try {
             updateShop.setId(shopId);
             return Response.of(shopService.updateShop(updateShop));
-        } catch (WxShopException.NotAuthorizedForShopException e) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            return Response.of(null, e.getMessage());
-        } catch (WxShopException.ResourceNotFoundException e) {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
+        } catch (WxShopException e) {
+            response.setStatus(e.getStatusCode());
             return Response.of(null, e.getMessage());
         }
     }

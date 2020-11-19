@@ -22,7 +22,7 @@ public class ShopController {
         this.shopService = shopService;
     }
 
-    @PostMapping("shop")
+    @PostMapping("/shop")
     @ResponseBody
     public Response<Shop> createShop(@RequestBody Map<String, String> param,
                                HttpServletResponse response) {
@@ -33,7 +33,7 @@ public class ShopController {
         return Response.of(shop);
     }
 
-    @PutMapping("shop/{id}")
+    @PutMapping("/shop/{id}")
     @ResponseBody
     public Response<Shop> updateShop(@PathVariable("id") Long shopId,
                                      @RequestBody Map<String, String> param,
@@ -58,6 +58,19 @@ public class ShopController {
         createShop.setDescription(description);
         createShop.setName(name);
         return createShop;
+    }
+
+    @DeleteMapping("/shop/{id}")
+    @ResponseBody
+    public Response<Shop> deleteShop(@PathVariable("id") Long shopId,
+                                     HttpServletResponse response) {
+        try {
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+            return Response.of(shopService.deleteShopById(shopId));
+        } catch (WxShopException e) {
+            response.setStatus(e.getStatusCode());
+            return Response.of(null, e.getMessage());
+        }
     }
 
 }

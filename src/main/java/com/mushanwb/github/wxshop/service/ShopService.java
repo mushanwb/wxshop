@@ -3,6 +3,7 @@ package com.mushanwb.github.wxshop.service;
 import com.mushanwb.github.wxshop.dao.ShopDao;
 import com.mushanwb.github.wxshop.entity.DataStatus;
 import com.mushanwb.github.wxshop.entity.WxShopException;
+import com.mushanwb.github.wxshop.generate.Goods;
 import com.mushanwb.github.wxshop.generate.Shop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,13 +31,20 @@ public class ShopService {
     public Shop updateShop(Shop updateShop) {
         Shop shop = shopDao.findShopById(updateShop.getId());
         if (shop == null) {
-            throw new WxShopException.ResourceNotFoundException("店铺未找到");
+            throw WxShopException.notFound("店铺未找到");
         }
         if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
             shopDao.updateShop(updateShop);
-            return updateShop;
+            return shopDao.findShopById(updateShop.getId());
         } else {
-            throw new WxShopException.NotAuthorizedForShopException("无权访问！");
+            throw WxShopException.forbidden("无权访问！");
         }
+    }
+
+    public Shop deleteShopById(Long shopId) {
+        Shop deleteShop = new Shop();
+        deleteShop.setId(shopId);
+        deleteShop.setStatus(DataStatus.DELETED.getName());
+        return updateShop(deleteShop);
     }
 }

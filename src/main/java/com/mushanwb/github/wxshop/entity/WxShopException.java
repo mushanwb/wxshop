@@ -1,6 +1,6 @@
 package com.mushanwb.github.wxshop.entity;
 
-public class WxShopException {
+public class WxShopException extends RuntimeException {
 
     public static class NotAuthorizedForShopException extends RuntimeException {
         public NotAuthorizedForShopException(String message) {

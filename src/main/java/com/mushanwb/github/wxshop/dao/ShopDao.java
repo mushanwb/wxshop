@@ -1,7 +1,6 @@
 package com.mushanwb.github.wxshop.dao;
 
 import com.mushanwb.github.wxshop.generate.Shop;
-import com.mushanwb.github.wxshop.generate.ShopExample;
 import com.mushanwb.github.wxshop.generate.ShopMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

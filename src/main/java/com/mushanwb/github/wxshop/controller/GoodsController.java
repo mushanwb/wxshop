@@ -1,6 +1,5 @@
 package com.mushanwb.github.wxshop.controller;
 
-import com.mushanwb.github.wxshop.dao.GoodsDao;
 import com.mushanwb.github.wxshop.entity.PageResponse;
 import com.mushanwb.github.wxshop.entity.Response;
 import com.mushanwb.github.wxshop.entity.WxShopException;

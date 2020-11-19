@@ -39,19 +39,10 @@ public class GoodsService {
     }
 
     public Goods deleteGoodsById(Long goodsId) {
-        Shop shop = shopDao.findShopById(goodsId);
-
-        if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
-            Goods goods = goodsDao.getGoodsById(goodsId);
-            if (goods == null) {
-                throw WxShopException.notFound("商品未找到");
-            }
-            goods.setStatus(DataStatus.DELETED.getName());
-            goodsDao.deleteGoodsById(goods);
-            return goods;
-        } else {
-            throw WxShopException.forbidden("无权访问！");
-        }
+        Goods deleteGoods = new Goods();
+        deleteGoods.setId(goodsId);
+        deleteGoods.setStatus(DataStatus.DELETED.getName());
+        return updateGoods(deleteGoods);
     }
 
     public PageResponse<Goods> getGoods(Integer pageNum, Integer pageSize, Integer shopId) {
@@ -63,20 +54,21 @@ public class GoodsService {
         return PageResponse.pageData(pageNum, pageSize, totalPage, goods);
     }
 
-    public Goods updateGoods(Goods goods) {
+    public Goods updateGoods(Goods updateGoods) {
+        Goods goods = goodsDao.getGoodsById(updateGoods.getId());
+        if (goods == null) {
+            throw WxShopException.notFound("商品未找到");
+        }
+
         Shop shop = shopDao.findShopById(goods.getShopId());
 
         if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
-            int affectedRows = goodsDao.updateGoods(goods);
-            if (affectedRows == 0) {
-                throw WxShopException.notFound("商品未找到");
-            }
+            goodsDao.updateGoods(goods);
             return goods;
         } else {
             throw WxShopException.forbidden("无权访问！");
         }
     }
-
 
 
 }

@@ -55,12 +55,8 @@ public class GoodsDao {
     }
 
     public int updateGoods(Goods goods) {
-        return goodsMapper.updateByPrimaryKey(goods);
+        return goodsMapper.updateByPrimaryKeySelective(goods);
     }
 
-    public static class ResourceNotFoundException extends RuntimeException{
-        public ResourceNotFoundException(String message) {
-            super(message);
-        }
-    }
+
 }

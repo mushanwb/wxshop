@@ -4,6 +4,7 @@ import com.mushanwb.github.wxshop.dao.GoodsDao;
 import com.mushanwb.github.wxshop.dao.ShopDao;
 import com.mushanwb.github.wxshop.entity.DataStatus;
 import com.mushanwb.github.wxshop.entity.PageResponse;
+import com.mushanwb.github.wxshop.entity.WxShopException;
 import com.mushanwb.github.wxshop.generate.Goods;
 import com.mushanwb.github.wxshop.generate.Shop;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class GoodsService {
             goodsDao.createGoods(goods);
             return goods;
         } else {
-            throw new NotAuthorizedForShopException("无权访问！");
+            throw new WxShopException.NotAuthorizedForShopException("无权访问！");
         }
     }
 
@@ -43,13 +44,13 @@ public class GoodsService {
         if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
             Goods goods = goodsDao.getGoodsById(goodsId);
             if (goods == null) {
-                throw new GoodsDao.ResourceNotFoundException("商品未找到");
+                throw new WxShopException.ResourceNotFoundException("商品未找到");
             }
             goods.setStatus(DataStatus.DELETED.getName());
             goodsDao.deleteGoodsById(goods);
             return goods;
         } else {
-            throw new NotAuthorizedForShopException("无权访问！");
+            throw new WxShopException.NotAuthorizedForShopException("无权访问！");
         }
     }
 
@@ -68,18 +69,14 @@ public class GoodsService {
         if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
             int affectedRows = goodsDao.updateGoods(goods);
             if (affectedRows == 0) {
-                throw new GoodsDao.ResourceNotFoundException("未找到");
+                throw new WxShopException.ResourceNotFoundException("商品未找到");
             }
             return goods;
         } else {
-            throw new NotAuthorizedForShopException("无权访问！");
+            throw new WxShopException.NotAuthorizedForShopException("无权访问！");
         }
     }
 
-    public static class NotAuthorizedForShopException extends RuntimeException {
-        public NotAuthorizedForShopException(String message) {
-            super(message);
-        }
-    }
+
 
 }

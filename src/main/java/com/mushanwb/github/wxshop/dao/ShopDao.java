@@ -1,6 +1,7 @@
 package com.mushanwb.github.wxshop.dao;
 
 import com.mushanwb.github.wxshop.generate.Shop;
+import com.mushanwb.github.wxshop.generate.ShopExample;
 import com.mushanwb.github.wxshop.generate.ShopMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,11 @@ public class ShopDao {
         return shopMapper.selectByPrimaryKey(shopId);
     }
 
-    public Long createShop(Shop createShop) {
-        return (long) shopMapper.insert(createShop);
+    public void createShop(Shop createShop) {
+        shopMapper.insert(createShop);
+    }
+
+    public void updateShop(Shop updateShop) {
+        shopMapper.updateByPrimaryKeySelective(updateShop);
     }
 }

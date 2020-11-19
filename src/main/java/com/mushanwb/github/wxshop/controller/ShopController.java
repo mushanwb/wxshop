@@ -1,6 +1,7 @@
 package com.mushanwb.github.wxshop.controller;
 
 import com.mushanwb.github.wxshop.entity.Response;
+import com.mushanwb.github.wxshop.entity.WxShopException;
 import com.mushanwb.github.wxshop.generate.Shop;
 import com.mushanwb.github.wxshop.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,33 @@ public class ShopController {
     @ResponseBody
     public Response<Shop> createShop(@RequestBody Map<String, String> param,
                                HttpServletResponse response) {
+
+        Shop createShop = createAndUpdateShopParam(param);
+        Shop shop = shopService.createShop(createShop);
+        response.setStatus(HttpStatus.CREATED.value());
+        return Response.of(shop);
+    }
+
+    @PutMapping("shop/{id}")
+    @ResponseBody
+    public Response<Shop> updateShop(@PathVariable("id") Long shopId,
+                                     @RequestBody Map<String, String> param,
+                                     HttpServletResponse response) {
+        Shop updateShop = createAndUpdateShopParam(param);
+
+        try {
+            updateShop.setId(shopId);
+            return Response.of(shopService.updateShop(updateShop));
+        } catch (WxShopException.NotAuthorizedForShopException e) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return Response.of(null, e.getMessage());
+        } catch (WxShopException.ResourceNotFoundException e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            return Response.of(null, e.getMessage());
+        }
+    }
+
+    private Shop createAndUpdateShopParam(Map<String, String> param) {
         String name = param.get("name");
         String description = param.get("description");
         String imgUrl = param.get("imgUrl");
@@ -32,11 +60,7 @@ public class ShopController {
         createShop.setImgUrl(imgUrl);
         createShop.setDescription(description);
         createShop.setName(name);
-
-        Shop shop = shopService.createShop(createShop);
-        response.setStatus(HttpStatus.CREATED.value());
-        return Response.of(shop);
+        return createShop;
     }
-
 
 }

@@ -3,6 +3,7 @@ package com.mushanwb.github.wxshop.controller;
 import com.mushanwb.github.wxshop.dao.GoodsDao;
 import com.mushanwb.github.wxshop.entity.PageResponse;
 import com.mushanwb.github.wxshop.entity.Response;
+import com.mushanwb.github.wxshop.entity.WxShopException;
 import com.mushanwb.github.wxshop.generate.Goods;
 import com.mushanwb.github.wxshop.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class GoodsController {
 
         try {
             return Response.of(goodsService.createGoods(goods));
-        } catch (GoodsService.NotAuthorizedForShopException e) {
+        } catch (WxShopException.NotAuthorizedForShopException e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             return Response.of(null, e.getMessage());
         }
@@ -44,10 +45,10 @@ public class GoodsController {
         try {
             response.setStatus(HttpStatus.NO_CONTENT.value());
             return Response.of(goodsService.deleteGoodsById(goodsId));
-        } catch (GoodsService.NotAuthorizedForShopException e) {
+        } catch (WxShopException.NotAuthorizedForShopException e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             return Response.of(null, e.getMessage());
-        } catch (GoodsDao.ResourceNotFoundException e) {
+        } catch (WxShopException.ResourceNotFoundException e) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
             return Response.of(null, e.getMessage());
         }
@@ -70,10 +71,10 @@ public class GoodsController {
         try {
             goods.setId(goodsId);
             return Response.of(goodsService.updateGoods(goods));
-        } catch (GoodsService.NotAuthorizedForShopException e) {
+        } catch (WxShopException.NotAuthorizedForShopException e) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             return Response.of(null, e.getMessage());
-        } catch (GoodsDao.ResourceNotFoundException e) {
+        } catch (WxShopException.ResourceNotFoundException e) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
             return Response.of(null, e.getMessage());
         }

@@ -18,4 +18,8 @@ public class ShopDao {
     public Shop findShopById(Long shopId) {
         return shopMapper.selectByPrimaryKey(shopId);
     }
+
+    public Long createShop(Shop createShop) {
+        return (long) shopMapper.insert(createShop);
+    }
 }

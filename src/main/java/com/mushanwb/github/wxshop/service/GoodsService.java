@@ -30,8 +30,7 @@ public class GoodsService {
         Shop shop = shopDao.findShopById(goods.getShopId());
 
         if (Objects.equals(shop.getOwnerUserId(), UserContext.getCurrentUser().getId())) {
-            long goodsId = goodsDao.createGoods(goods);
-            goods.setId(goodsId);
+            goodsDao.createGoods(goods);
             return goods;
         } else {
             throw new NotAuthorizedForShopException("无权访问！");

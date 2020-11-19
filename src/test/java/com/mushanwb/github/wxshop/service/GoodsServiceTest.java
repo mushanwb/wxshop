@@ -55,14 +55,11 @@ class GoodsServiceTest {
         Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(shop);
         // 假设返回的 shop 里 userId 为 1，也就是跟模拟的用户 id 一致
         Mockito.when(shop.getOwnerUserId()).thenReturn(1L);
-        // 假设添加商品成功后获得的 id 为 123
-        Mockito.when(goodsDao.createGoods(goods)).thenReturn(123);
+        // 假设添加商品成功后返回影响的行数
+        Mockito.when(goodsDao.createGoods(goods)).thenReturn(1);
 
         // 验证插入后的 goods 和 goodsService.createGoods 方法得到的 goods 是一致的
         Assertions.assertEquals(goods, goodsService.createGoods(goods));
-
-        // 验证 goods 确实被 setId 为 123
-        Mockito.verify(goods).setId(123L);
     }
 
     @Test

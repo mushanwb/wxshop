@@ -3,7 +3,6 @@ package com.mushanwb.github.wxshop.service;
 import com.mushanwb.github.wxshop.dao.ShopDao;
 import com.mushanwb.github.wxshop.entity.DataStatus;
 import com.mushanwb.github.wxshop.entity.WxShopException;
-import com.mushanwb.github.wxshop.generate.Goods;
 import com.mushanwb.github.wxshop.generate.Shop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

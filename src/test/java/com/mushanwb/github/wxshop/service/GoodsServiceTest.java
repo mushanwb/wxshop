@@ -2,7 +2,6 @@ package com.mushanwb.github.wxshop.service;
 
 import com.mushanwb.github.wxshop.dao.GoodsDao;
 import com.mushanwb.github.wxshop.dao.ShopDao;
-import com.mushanwb.github.wxshop.entity.DataStatus;
 import com.mushanwb.github.wxshop.entity.PageResponse;
 import com.mushanwb.github.wxshop.entity.WxShopException;
 import com.mushanwb.github.wxshop.generate.Goods;
@@ -83,18 +82,14 @@ class GoodsServiceTest {
         // 假设返回的 shop 里 userId 为 1，也就是跟模拟的用户 id 一致
         Mockito.when(shop.getOwnerUserId()).thenReturn(1L);
         Mockito.when(goodsDao.getGoodsById(deleteGoodsId)).thenReturn(goods);
+        Mockito.when(goodsDao.updateGoods(goods)).thenReturn(1);
 
-        goodsService.deleteGoodsById(deleteGoodsId);
-        Mockito.verify(goods).setStatus(DataStatus.DELETED.getName());
+        Assertions.assertEquals(goods, goodsService.deleteGoodsById(deleteGoodsId));
     }
 
     @Test
     public void throwExceptionIfGoodsNotFound() {
         Long deleteGoodsId = 1L;
-        // 假设当调用 shopDao.findShopById 这个方法的时候，无论传入一个什么样的 long 类型值，都会返回一个 shop
-        Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(shop);
-        // 假设返回的 shop 里 userId 为 1，也就是跟模拟的用户 id 一致
-        Mockito.when(shop.getOwnerUserId()).thenReturn(1L);
         // 假设 goodsDao.getGoodsById 返回一个 null
         Mockito.when(goodsDao.getGoodsById(deleteGoodsId)).thenReturn(null);
 
@@ -105,6 +100,8 @@ class GoodsServiceTest {
     @Test
     public void deleteGoodsThrowExceptionIfUserIsNotOwner() {
         Long deleteGoodsId = 1L;
+        // 假设 goodsDao.getGoodsById 返回一个 goods
+        Mockito.when(goodsDao.getGoodsById(deleteGoodsId)).thenReturn(goods);
         // 假设当调用 shopDao.findShopById 这个方法的时候，无论传入一个什么样的 long 类型值，都会返回一个 shop
         Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(shop);
         // 假设返回的 shop 里 userId 为 2，也就是跟模拟的用户 id 不一致
@@ -165,6 +162,8 @@ class GoodsServiceTest {
         Mockito.when(shopDao.findShopById(Mockito.anyLong())).thenReturn(shop);
         // 假设返回的 shop 里 userId 为 1，也就是跟模拟的用户 id 一致
         Mockito.when(shop.getOwnerUserId()).thenReturn(1L);
+        // 假设 goodsDao.getGoodsById 返回一个 null
+        Mockito.when(goodsDao.getGoodsById(Mockito.anyLong())).thenReturn(goods);
         Mockito.when(goodsDao.updateGoods(goods)).thenReturn(1);
 
         Assertions.assertEquals(goods, goodsService.updateGoods(goods));

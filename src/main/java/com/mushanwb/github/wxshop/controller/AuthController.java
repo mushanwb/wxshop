@@ -6,6 +6,8 @@ import com.mushanwb.github.wxshop.service.TelVerificationService;
 import com.mushanwb.github.wxshop.service.UserContext;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,9 @@ public class AuthController {
     private final AuthService authService;
     private TelVerificationService telVerificationService;
 
+    private static Logger logger = LoggerFactory.getLogger(AuthController.class);
+
+
     @Autowired
     public AuthController(AuthService authService,
                           TelVerificationService telVerificationService) {
@@ -30,6 +35,8 @@ public class AuthController {
     public void code(@RequestBody Map<String, String> param,
                      HttpServletResponse response) {
         String tel = param.get("tel");
+        logger.warn("传进来的参数info: {}", tel);
+
         if (telVerificationService.verifyTelParameter(tel)) {
             authService.sendVerificationCode(tel);
         } else {
